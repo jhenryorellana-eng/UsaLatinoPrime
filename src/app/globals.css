@@ -203,3 +203,179 @@
   0%, 100% { transform: scale(1); opacity: 0.5; }
   50% { transform: scale(1.2); opacity: 1; }
 }
+
+/* ===== Services Page Animations ===== */
+
+/* Staggered card entrance */
+.svc-card-enter {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: svc-card-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes svc-card-rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Gold shimmer sweep on featured cards */
+.svc-featured-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.svc-featured-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(242, 169, 0, 0.07) 40%,
+    rgba(242, 169, 0, 0.15) 50%,
+    rgba(242, 169, 0, 0.07) 60%,
+    transparent 100%
+  );
+  animation: svc-shimmer-sweep 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes svc-shimmer-sweep {
+  0%, 100% { left: -100%; }
+  50% { left: 150%; }
+}
+
+/* Geometric corner ornament */
+.svc-corner-tl::before,
+.svc-corner-br::after {
+  content: '';
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-color: #F2A900;
+  border-style: solid;
+  opacity: 0.5;
+  transition: opacity 0.3s ease, width 0.3s ease, height 0.3s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+.svc-corner-tl::before {
+  top: 8px;
+  left: 8px;
+  border-width: 2px 0 0 2px;
+}
+.svc-corner-br::after {
+  bottom: 8px;
+  right: 8px;
+  border-width: 0 2px 2px 0;
+}
+.svc-corner-tl:hover::before,
+.svc-corner-br:hover::after {
+  opacity: 1;
+  width: 36px;
+  height: 36px;
+}
+
+/* Diagonal gold accent stripe */
+.svc-diagonal-stripe {
+  position: relative;
+  overflow: hidden;
+}
+.svc-diagonal-stripe::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 3px;
+  height: 200%;
+  background: linear-gradient(to bottom, transparent, #F2A900, transparent);
+  transform: rotate(20deg);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.svc-diagonal-stripe:hover::before {
+  opacity: 0.4;
+}
+
+/* Pulsing dot */
+.svc-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  position: relative;
+}
+.svc-pulse-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid #22c55e;
+  animation: svc-pulse-ring 2s ease-out infinite;
+}
+
+@keyframes svc-pulse-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* Trust banner marquee-like subtle motion */
+.svc-trust-glow {
+  position: relative;
+}
+.svc-trust-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(242, 169, 0, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(242, 169, 0, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Card price counter animation */
+.svc-price-reveal {
+  animation: svc-price-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes svc-price-pop {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Hover lift with cascading shadow */
+.svc-hover-lift {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+}
+.svc-hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 40, 85, 0.06),
+    0 12px 24px -4px rgba(0, 40, 85, 0.10),
+    0 24px 48px -8px rgba(0, 40, 85, 0.08);
+}
+
+/* Icon container glow on hover */
+.svc-icon-glow {
+  transition: box-shadow 0.3s ease, background 0.3s ease;
+}
+.group:hover .svc-icon-glow {
+  box-shadow: 0 0 20px rgba(242, 169, 0, 0.3);
+}
+
+/* Map floating badge */
+.svc-map-badge {
+  animation: svc-badge-float 3s ease-in-out infinite;
+}
+
+@keyframes svc-badge-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
