@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { WelcomeModal } from '@/components/portal/WelcomeModal'
 import {
   Shield, Gavel, Baby, ArrowRightLeft, Receipt, Hash, CreditCard, FileText, Car,
-  Star, Clock, CheckCircle2, Users, ChevronRight
+  Star, Clock, CheckCircle2, Users, ChevronRight, MapPin, CalendarDays
 } from 'lucide-react'
 
 const iconMap: Record<string, any> = {
@@ -178,6 +178,67 @@ export default async function ServicesPage() {
             )
           })}
         </div>
+      </div>
+
+      {/* Office Location */}
+      <div className="space-y-3">
+        <h2 className="text-lg font-semibold text-gray-900">Visítanos en Persona</h2>
+        <Card className="overflow-hidden border border-gray-200">
+          <div className="grid md:grid-cols-[1fr,280px]">
+            {/* Map */}
+            <div className="h-[250px] md:h-auto min-h-[250px]">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3037.5!2d-111.7955!3d40.4285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87528a1e0e3fffff%3A0x0!2s10951+N+Town+Center+Dr%2C+Highland%2C+UT+84003!5e0!3m2!1sen!2sus!4v1700000000000"
+                width="100%"
+                height="100%"
+                style={{ border: 0, minHeight: '250px' }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Ubicación de UsaLatinoPrime"
+              />
+            </div>
+
+            {/* Info panel */}
+            <CardContent className="p-5 flex flex-col justify-center bg-gradient-to-b from-white to-gray-50/50">
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-[#002855]/5 shrink-0">
+                    <MapPin className="w-5 h-5 text-[#002855]" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900 text-sm">Dirección</p>
+                    <p className="text-sm text-gray-600 mt-0.5">
+                      10951 N. Town Center Drive
+                    </p>
+                    <p className="text-sm text-gray-600">Highland, Utah 84003</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-[#002855]/5 shrink-0">
+                    <CalendarDays className="w-5 h-5 text-[#002855]" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900 text-sm">Horario</p>
+                    <p className="text-sm text-gray-600 mt-0.5">Lunes a Viernes</p>
+                    <p className="text-sm font-medium text-[#002855]">9:00 AM — 5:00 PM</p>
+                  </div>
+                </div>
+
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=10951+N+Town+Center+Drive+Highland+UT+84003"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 w-full mt-2 px-4 py-2.5 bg-[#002855] text-white text-sm font-semibold rounded-lg hover:bg-[#001a3a] transition-colors"
+                >
+                  <MapPin className="w-4 h-4" />
+                  Cómo llegar
+                </a>
+              </div>
+            </CardContent>
+          </div>
+        </Card>
       </div>
 
       {/* Footer trust */}
