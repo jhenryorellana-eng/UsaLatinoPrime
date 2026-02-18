@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { WelcomeModal } from '@/components/portal/WelcomeModal'
+import { CardSpotlight } from '@/components/portal/CardSpotlight'
 import {
   Shield, Gavel, Baby, ArrowRightLeft, Receipt, Hash, CreditCard, FileText, Car,
   Star, Clock, CheckCircle2, Users, ChevronRight, MapPin, CalendarDays, Navigation,
@@ -205,12 +206,13 @@ export default async function ServicesPage() {
           <span className="text-xs text-gray-600 font-medium">{regular.length} servicios</span>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <CardSpotlight cardCount={regular.length}>
           {regular.map((service, i) => {
             const Icon = iconMap[service.icon || 'FileText'] || FileText
             return (
               <Link key={service.id} href={`/portal/services/${service.slug}`}>
                 <div
+                  data-spotlight-card
                   className="svc-card-enter svc-hover-lift group relative rounded-2xl overflow-hidden cursor-pointer h-full border border-[#002855]/10 hover:border-[#F2A900]/40 hover:shadow-xl hover:shadow-[#002855]/8 transition-all duration-400"
                   style={{
                     animationDelay: `${(i + 2) * 100}ms`,
@@ -293,7 +295,7 @@ export default async function ServicesPage() {
               </Link>
             )
           })}
-        </div>
+        </CardSpotlight>
       </div>
 
       {/* ══════════ OFFICE LOCATION ══════════ */}

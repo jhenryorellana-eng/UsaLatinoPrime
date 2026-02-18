@@ -391,3 +391,100 @@
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-4px); }
 }
+
+/* ===== Jewel Vitrine Spotlight System ===== */
+
+/* Active card — elevation + golden glow aura */
+.spotlight-active {
+  transform: translateY(-8px) scale(1.02) !important;
+  border-color: rgba(242, 169, 0, 0.5) !important;
+  box-shadow:
+    0 0 0 1px rgba(242, 169, 0, 0.15),
+    0 4px 12px -2px rgba(242, 169, 0, 0.20),
+    0 12px 32px -4px rgba(242, 169, 0, 0.15),
+    0 24px 48px -8px rgba(0, 40, 85, 0.10),
+    inset 0 1px 0 rgba(242, 169, 0, 0.08) !important;
+  transition:
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s ease !important;
+  z-index: 10;
+  position: relative;
+}
+
+/* When NOT active — smooth return */
+[data-spotlight-card]:not(.spotlight-active) {
+  transition:
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.8s ease,
+    border-color 0.6s ease !important;
+}
+
+/* Shimmer sweep — golden light crossing the card */
+.spotlight-active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(242, 169, 0, 0.04) 30%,
+    rgba(242, 169, 0, 0.12) 45%,
+    rgba(242, 169, 0, 0.04) 60%,
+    transparent 100%
+  );
+  animation: spotlight-shimmer 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards;
+  pointer-events: none;
+  z-index: 20;
+  border-radius: inherit;
+}
+
+@keyframes spotlight-shimmer {
+  0% { left: -120%; opacity: 0; }
+  15% { opacity: 1; }
+  100% { left: 160%; opacity: 0; }
+}
+
+/* Left bar intensifies to full gold */
+.spotlight-active > div:first-child {
+  width: 3px !important;
+  background: linear-gradient(to bottom, #F2A900, #F2A900, #F2A900) !important;
+  box-shadow: 2px 0 12px rgba(242, 169, 0, 0.25);
+}
+
+/* Icon box gets brighter glow */
+.spotlight-active .svc-icon-glow {
+  box-shadow:
+    0 0 16px rgba(242, 169, 0, 0.35),
+    0 0 32px rgba(242, 169, 0, 0.15) !important;
+}
+
+/* Bottom bar lights up gold */
+.spotlight-active > div:last-child {
+  background: linear-gradient(to right, #F2A900, #F2A900, #F2A900) !important;
+  height: 2px !important;
+  box-shadow: 0 -2px 12px rgba(242, 169, 0, 0.2);
+}
+
+/* Corner aura — top-right golden radiance */
+.spotlight-active::after {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(242, 169, 0, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  animation: spotlight-aura 2s ease-in-out infinite;
+}
+
+@keyframes spotlight-aura {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
