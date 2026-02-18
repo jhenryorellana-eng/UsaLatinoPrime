@@ -143,7 +143,7 @@ export function generateCasePDF(input: CasePDFInput): jsPDF {
   function addFooter() {
     doc.setFontSize(7)
     doc.setTextColor(160, 160, 160)
-    doc.text(`USALatino Services \u2014 Caso #${caseNumber}`, margin, pageHeight - 12)
+    doc.text(`UsaLatinoPrime \u2014 Caso #${caseNumber}`, margin, pageHeight - 12)
     const genDate = new Date().toLocaleString('es-US')
     doc.text(`Generado: ${genDate}`, pageWidth - margin, pageHeight - 12, { align: 'right' })
     doc.setDrawColor(230, 230, 230)
@@ -152,13 +152,13 @@ export function generateCasePDF(input: CasePDFInput): jsPDF {
 
   // === HEADER ===
   doc.setFontSize(18)
-  doc.setTextColor(30, 58, 95) // dark blue
+  doc.setTextColor(0, 40, 85) // Utah navy blue #002855
   doc.setFont('helvetica', 'bold')
-  doc.text('USALatino Services', margin, y)
+  doc.text('UsaLatinoPrime', margin, y)
   y += 8
 
-  // Blue line
-  doc.setDrawColor(37, 99, 235)
+  // Gold line (Utah flag)
+  doc.setDrawColor(242, 169, 0)
   doc.setLineWidth(0.8)
   doc.line(margin, y, pageWidth - margin, y)
   y += 6
@@ -185,7 +185,7 @@ export function generateCasePDF(input: CasePDFInput): jsPDF {
 
     // Section title
     doc.setFontSize(11)
-    doc.setTextColor(37, 99, 235) // blue
+    doc.setTextColor(0, 40, 85) // Utah navy
     doc.setFont('helvetica', 'bold')
     doc.text(`Paso ${step.step}: ${step.title}`, margin, y)
     y += 1.5

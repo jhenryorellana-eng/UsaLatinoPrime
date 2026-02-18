@@ -55,7 +55,7 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: oklch(0.25 0.08 250);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -123,4 +123,83 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* ===== Auth Hero Animations ===== */
+
+/* Title colors with shimmer */
+.auth-title-usa {
+  color: #ffffff;
+  display: inline-block;
+  animation: auth-float 3s ease-in-out infinite;
+}
+
+.auth-title-latino {
+  color: #F2A900;
+  display: inline-block;
+  animation: auth-float 3s ease-in-out 0.15s infinite;
+  text-shadow: 0 0 30px rgba(242, 169, 0, 0.3);
+}
+
+.auth-title-prime {
+  color: #ffffff;
+  display: inline-block;
+  animation: auth-float 3s ease-in-out 0.3s infinite;
+  position: relative;
+}
+
+/* Gentle floating wave for each word */
+@keyframes auth-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Sparkle decorations */
+.auth-sparkle {
+  position: absolute;
+  color: #F2A900;
+  pointer-events: none;
+  animation: auth-twinkle 2s ease-in-out infinite;
+}
+
+.auth-sparkle-1 {
+  top: -12px;
+  right: -20px;
+  font-size: 14px;
+  animation-delay: 0s;
+}
+
+.auth-sparkle-2 {
+  top: 4px;
+  left: -24px;
+  font-size: 10px;
+  animation-delay: 0.7s;
+}
+
+.auth-sparkle-3 {
+  bottom: -4px;
+  right: -28px;
+  font-size: 12px;
+  animation-delay: 1.4s;
+}
+
+@keyframes auth-twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(180deg); }
+}
+
+/* Background glow pulse */
+.auth-bg-glow {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(242, 169, 0, 0.08) 0%, transparent 70%);
+  animation: auth-glow-pulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes auth-glow-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 1; }
 }

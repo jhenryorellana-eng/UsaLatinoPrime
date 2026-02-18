@@ -2,13 +2,17 @@ import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { WelcomeModal } from '@/components/portal/WelcomeModal'
 import {
-  Shield, Gavel, Baby, ArrowRightLeft, Receipt, Hash, CreditCard, FileText, Car
+  Shield, Gavel, Baby, ArrowRightLeft, Receipt, Hash, CreditCard, FileText, Car,
+  Star, Clock, CheckCircle2, Users, ChevronRight
 } from 'lucide-react'
 
 const iconMap: Record<string, any> = {
   Shield, Gavel, Baby, ArrowRightLeft, Receipt, Hash, CreditCard, FileText, Car
 }
+
+const featuredSlugs = ['cambio-de-corte', 'visa-juvenil']
 
 export default async function ServicesPage() {
   const supabase = await createClient()
@@ -18,49 +22,167 @@ export default async function ServicesPage() {
     .eq('is_active', true)
     .order('display_order')
 
+  const { data: { user } } = await supabase.auth.getUser()
+  const firstName = user?.user_metadata?.first_name || ''
+
+  const featured = services?.filter(s => featuredSlugs.includes(s.slug)) || []
+  const regular = services?.filter(s => !featuredSlugs.includes(s.slug)) || []
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
+      <WelcomeModal firstName={firstName} />
+      {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Servicios Disponibles</h1>
-        <p className="text-gray-600">Seleccione el servicio que necesita</p>
+        <h1 className="text-2xl font-bold text-gray-900">
+          {firstName ? `${firstName}, ` : ''}estos son nuestros servicios
+        </h1>
+        <p className="text-gray-500 mt-1">
+          Seleccione el servicio que necesita y lo guiaremos paso a paso
+        </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {services?.map((service) => {
-          const Icon = iconMap[service.icon || 'FileText'] || FileText
-          return (
-            <Link key={service.id} href={`/portal/services/${service.slug}`}>
-              <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="p-2 rounded-lg bg-blue-50">
-                      <Icon className="w-6 h-6 text-blue-600" />
+      {/* Trust Banner */}
+      <div className="bg-[#002855] rounded-xl p-4 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-white/90 text-sm">
+        <span className="flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-[#F2A900]" />
+          Consulta gratuita
+        </span>
+        <span className="flex items-center gap-2">
+          <Users className="w-4 h-4 text-[#F2A900]" />
+          +500 familias ayudadas
+        </span>
+        <span className="flex items-center gap-2">
+          <Shield className="w-4 h-4 text-[#F2A900]" />
+          Proceso 100% confidencial
+        </span>
+      </div>
+
+      {/* Featured Services */}
+      {featured.length > 0 && (
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <Star className="w-5 h-5 text-[#F2A900] fill-[#F2A900]" />
+            <h2 className="text-lg font-semibold text-gray-900">Servicios Destacados</h2>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {featured.map((service) => {
+              const Icon = iconMap[service.icon || 'FileText'] || FileText
+              return (
+                <Link key={service.id} href={`/portal/services/${service.slug}`}>
+                  <Card className="relative overflow-hidden border-2 border-[#F2A900]/40 hover:border-[#F2A900] bg-gradient-to-br from-white to-amber-50/50 hover:shadow-lg hover:shadow-[#F2A900]/10 transition-all duration-300 cursor-pointer h-full group">
+                    {/* Featured ribbon */}
+                    <div className="absolute top-0 right-0">
+                      <div className="bg-[#F2A900] text-[#002855] text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">
+                        Popular
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900">{service.name}</h3>
-                      <p className="text-sm text-gray-500 mt-1">{service.short_description}</p>
-                      <div className="mt-3 flex items-center gap-2">
-                        <span className="text-lg font-bold text-gray-900">
-                          ${service.base_price.toLocaleString()}
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="p-3 rounded-xl bg-[#002855] shadow-md shrink-0">
+                          <Icon className="w-6 h-6 text-[#F2A900]" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-bold text-gray-900 text-lg group-hover:text-[#002855] transition-colors">
+                            {service.name}
+                          </h3>
+                          <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+                            {service.short_description}
+                          </p>
+                          <div className="mt-4 flex items-center justify-between">
+                            <div>
+                              <span className="text-2xl font-bold text-[#002855]">
+                                ${Number(service.base_price).toLocaleString()}
+                              </span>
+                              {service.allow_installments && (
+                                <Badge className="ml-2 bg-[#002855]/10 text-[#002855] border-0 text-[10px]">
+                                  Planes de pago
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="w-8 h-8 rounded-full bg-[#F2A900] flex items-center justify-center group-hover:translate-x-1 transition-transform">
+                              <ChevronRight className="w-4 h-4 text-[#002855]" />
+                            </div>
+                          </div>
+                          {service.estimated_duration && (
+                            <div className="mt-3 inline-flex items-center gap-1.5 bg-[#002855]/10 rounded-full px-3 py-1.5">
+                              <Clock className="w-3.5 h-3.5 text-[#002855]" />
+                              <span className="text-xs font-semibold text-[#002855]">
+                                Tiempo estimado: {service.estimated_duration}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* All Other Services */}
+      <div className="space-y-3">
+        <h2 className="text-lg font-semibold text-gray-900">Todos los Servicios</h2>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {regular.map((service) => {
+            const Icon = iconMap[service.icon || 'FileText'] || FileText
+            return (
+              <Link key={service.id} href={`/portal/services/${service.slug}`}>
+                <Card className="overflow-hidden hover:shadow-lg hover:border-[#002855]/30 transition-all duration-300 cursor-pointer h-full group border border-gray-200 hover:-translate-y-0.5">
+                  {/* Top accent bar */}
+                  <div className="h-1 bg-gradient-to-r from-[#002855] to-[#002855]/60 group-hover:to-[#F2A900] transition-all duration-500" />
+                  <CardContent className="p-5">
+                    <div className="flex items-start gap-3">
+                      <div className="p-3 rounded-xl bg-gradient-to-br from-[#002855]/10 to-[#002855]/5 group-hover:from-[#002855] group-hover:to-[#002855]/80 transition-all duration-300 shrink-0">
+                        <Icon className="w-5 h-5 text-[#002855] group-hover:text-white transition-colors duration-300" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2">
+                          <h3 className="font-bold text-gray-900 group-hover:text-[#002855] transition-colors">
+                            {service.name}
+                          </h3>
+                          <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-[#F2A900] group-hover:translate-x-0.5 transition-all mt-0.5 shrink-0" />
+                        </div>
+                        <p className="text-sm text-gray-500 mt-1 line-clamp-2">
+                          {service.short_description}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Price + Duration bar */}
+                    <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl font-bold text-[#002855]">
+                          ${Number(service.base_price).toLocaleString()}
                         </span>
                         {service.allow_installments && (
-                          <Badge variant="secondary" className="text-xs">
+                          <Badge className="bg-[#F2A900]/10 text-[#9a6d00] border-0 text-[10px] font-semibold">
                             Planes de pago
                           </Badge>
                         )}
                       </div>
                       {service.estimated_duration && (
-                        <p className="text-xs text-gray-400 mt-1">
-                          Tiempo estimado: {service.estimated_duration}
-                        </p>
+                        <div className="flex items-center gap-1.5 bg-[#002855]/5 rounded-full px-3 py-1">
+                          <Clock className="w-3.5 h-3.5 text-[#002855]" />
+                          <span className="text-xs font-semibold text-[#002855]">
+                            {service.estimated_duration}
+                          </span>
+                        </div>
                       )}
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-          )
-        })}
+                  </CardContent>
+                </Card>
+              </Link>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* Footer trust */}
+      <div className="text-center text-sm text-gray-400 pt-4 border-t border-gray-100">
+        <p>Todos nuestros servicios incluyen seguimiento personalizado y atención en español</p>
       </div>
     </div>
   )

@@ -49,7 +49,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
   const NavContent = () => (
     <div className="flex flex-col h-full">
       <div className="p-6">
-        <h2 className="text-xl font-bold text-gray-900">HenryFlow</h2>
+        <h2 className="text-xl font-bold text-gray-900">UsaLatinoPrime</h2>
         <p className="text-sm text-gray-500">Portal del Cliente</p>
       </div>
       <Separator />
@@ -62,7 +62,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
             className={cn(
               'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
               pathname.startsWith(item.href)
-                ? 'bg-blue-50 text-blue-700'
+                ? 'bg-[#002855]/10 text-[#002855]'
                 : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
             )}
           >
@@ -104,7 +104,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
             <NavContent />
           </SheetContent>
         </Sheet>
-        <h1 className="font-semibold">HenryFlow</h1>
+        <h1 className="font-semibold">UsaLatinoPrime</h1>
       </div>
 
       {/* Main content */}

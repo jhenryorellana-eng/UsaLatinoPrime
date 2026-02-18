@@ -34,8 +34,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="flex flex-col h-full">
       <div className="p-6">
         <div className="flex items-center gap-2">
-          <Shield className="w-6 h-6 text-blue-600" />
-          <h2 className="text-xl font-bold text-gray-900">HenryFlow</h2>
+          <Shield className="w-6 h-6 text-[#002855]" />
+          <h2 className="text-xl font-bold text-gray-900">UsaLatinoPrime</h2>
         </div>
         <p className="text-sm text-gray-500">Panel de Administraci&oacute;n</p>
       </div>
@@ -49,7 +49,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             className={cn(
               'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
               pathname.startsWith(item.href)
-                ? 'bg-blue-50 text-blue-700'
+                ? 'bg-[#002855]/10 text-[#002855]'
                 : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
             )}
           >
@@ -81,7 +81,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </SheetTrigger>
           <SheetContent side="left" className="p-0 w-64"><NavContent /></SheetContent>
         </Sheet>
-        <h1 className="font-semibold">HenryFlow Admin</h1>
+        <h1 className="font-semibold">UsaLatinoPrime Admin</h1>
       </div>
       <main className="md:ml-64 p-6">{children}</main>
     </div>

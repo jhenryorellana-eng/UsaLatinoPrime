@@ -6,7 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "HenryFlow - Portal de Servicios Migratorios",
+  title: "UsaLatinoPrime - Portal de Servicios Migratorios",
   description: "Portal automatizado de servicios migratorios",
 };
 

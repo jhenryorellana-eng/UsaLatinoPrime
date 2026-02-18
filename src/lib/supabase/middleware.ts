@@ -27,13 +27,18 @@ export async function updateSession(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname
 
+  // API routes - skip auth
+  if (pathname.startsWith('/api/')) {
+    return supabaseResponse
+  }
+
   // Public routes
   if (pathname.startsWith('/login') || pathname.startsWith('/register')) {
     if (user) {
       // Redirect logged in users
       const { data: role } = await supabase.rpc('get_user_role', { user_id: user.id })
 
-      const redirectUrl = role === 'admin' ? '/admin/dashboard' : '/portal/dashboard'
+      const redirectUrl = role === 'admin' ? '/admin/dashboard' : '/portal/services'
       return NextResponse.redirect(new URL(redirectUrl, request.url))
     }
     return supabaseResponse

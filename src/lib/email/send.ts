@@ -11,7 +11,7 @@ interface SendEmailParams {
 export async function sendEmail({ to, subject, html }: SendEmailParams) {
   try {
     const { data, error } = await resend.emails.send({
-      from: 'HenryFlow <noreply@henryflow.com>',
+      from: 'UsaLatinoPrime <noreply@usalatinoprime.com>',
       to,
       subject,
       html,

@@ -42,28 +42,44 @@ export default function RegisterPage() {
 
     setLoading(true)
 
-    const { error } = await supabase.auth.signUp({
-      email: formData.email,
-      password: formData.password,
-      options: {
-        data: {
-          first_name: formData.first_name,
-          last_name: formData.last_name,
-          phone: formData.phone,
-        },
-      },
+    // Crear usuario via API (auto-confirma email)
+    const res = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: formData.email,
+        password: formData.password,
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        phone: formData.phone,
+      }),
     })
 
-    if (error) {
-      toast.error('Error al registrarse', { description: error.message })
+    const result = await res.json()
+
+    if (!res.ok) {
+      toast.error('Error al registrarse', { description: result.error })
       setLoading(false)
       return
     }
 
-    toast.success('Cuenta creada exitosamente', {
-      description: 'Ahora puede iniciar sesion.',
+    // Auto-login inmediato
+    const { error: loginError } = await supabase.auth.signInWithPassword({
+      email: formData.email,
+      password: formData.password,
     })
-    router.push('/login')
+
+    if (loginError) {
+      toast.success('Cuenta creada exitosamente', {
+        description: 'Ahora puede iniciar sesion.',
+      })
+      router.push('/login')
+      return
+    }
+
+    toast.success('Bienvenido a UsaLatinoPrime!')
+    router.refresh()
+    router.push('/portal/services')
   }
 
   return (
@@ -152,7 +168,7 @@ export default function RegisterPage() {
           </Button>
           <p className="text-sm text-gray-600 text-center">
             Ya tiene cuenta?{' '}
-            <Link href="/login" className="text-blue-600 hover:underline">
+            <Link href="/login" className="text-[#F2A900] hover:underline">
               Inicie sesion
             </Link>
           </p>

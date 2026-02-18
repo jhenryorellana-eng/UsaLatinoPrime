@@ -49,7 +49,7 @@ export async function createNotification({
           subject: title,
           html: `
             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #1e40af;">HenryFlow</h2>
+              <h2 style="color: #002855;">UsaLatinoPrime</h2>
               <p>Hola ${profile.first_name},</p>
               <p>${message}</p>
               <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;" />
