@@ -13,6 +13,18 @@ const iconMap: Record<string, any> = {
 
 const featuredSlugs = ['cambio-de-corte', 'visa-juvenil']
 
+// Utah-inspired color palette per service
+const serviceColors: Record<string, { bg: string; bgHover: string; icon: string; iconText: string; accent: string; bar: string; badge: string; badgeText: string }> = {
+  'asilo-afirmativo':    { bg: 'from-[#002855]/6 to-[#002855]/2',   bgHover: 'group-hover:from-[#002855] group-hover:to-[#001a3a]',    icon: 'text-[#002855]', iconText: 'group-hover:text-white',       accent: '#002855', bar: 'bg-[#002855]',                                       badge: 'bg-[#002855]/10 border-[#002855]/20', badgeText: 'text-[#002855]' },
+  'asilo-defensivo':     { bg: 'from-[#BE1E2D]/8 to-[#BE1E2D]/2',   bgHover: 'group-hover:from-[#BE1E2D] group-hover:to-[#8B1621]',    icon: 'text-[#BE1E2D]', iconText: 'group-hover:text-white',       accent: '#BE1E2D', bar: 'bg-[#BE1E2D]',                                       badge: 'bg-[#BE1E2D]/10 border-[#BE1E2D]/20', badgeText: 'text-[#BE1E2D]' },
+  'taxes':               { bg: 'from-[#F2A900]/10 to-[#F2A900]/3',  bgHover: 'group-hover:from-[#F2A900] group-hover:to-[#c98d00]',    icon: 'text-[#9a6d00]', iconText: 'group-hover:text-[#002855]',   accent: '#F2A900', bar: 'bg-[#F2A900]',                                       badge: 'bg-[#F2A900]/10 border-[#F2A900]/20', badgeText: 'text-[#9a6d00]' },
+  'itin-number':         { bg: 'from-[#002855]/6 to-[#1a4a7a]/3',   bgHover: 'group-hover:from-[#1a4a7a] group-hover:to-[#002855]',    icon: 'text-[#1a4a7a]', iconText: 'group-hover:text-[#F2A900]',   accent: '#1a4a7a', bar: 'bg-gradient-to-r from-[#002855] to-[#1a4a7a]',       badge: 'bg-[#1a4a7a]/10 border-[#1a4a7a]/20', badgeText: 'text-[#1a4a7a]' },
+  'ajuste-de-estatus':   { bg: 'from-[#BE1E2D]/6 to-[#F2A900]/4',   bgHover: 'group-hover:from-[#BE1E2D] group-hover:to-[#002855]',    icon: 'text-[#BE1E2D]', iconText: 'group-hover:text-[#F2A900]',   accent: '#BE1E2D', bar: 'bg-gradient-to-r from-[#BE1E2D] to-[#F2A900]',       badge: 'bg-[#BE1E2D]/10 border-[#BE1E2D]/20', badgeText: 'text-[#BE1E2D]' },
+  'mociones':            { bg: 'from-[#F2A900]/8 to-[#002855]/4',   bgHover: 'group-hover:from-[#002855] group-hover:to-[#F2A900]/80', icon: 'text-[#002855]', iconText: 'group-hover:text-[#F2A900]',   accent: '#002855', bar: 'bg-gradient-to-r from-[#F2A900] to-[#002855]',       badge: 'bg-[#002855]/10 border-[#002855]/20', badgeText: 'text-[#002855]' },
+  'licencia-de-conducir':{ bg: 'from-[#BE1E2D]/5 to-[#BE1E2D]/2',   bgHover: 'group-hover:from-[#BE1E2D]/90 group-hover:to-[#002855]', icon: 'text-[#BE1E2D]', iconText: 'group-hover:text-white',       accent: '#BE1E2D', bar: 'bg-gradient-to-r from-[#BE1E2D] to-[#002855]',       badge: 'bg-[#BE1E2D]/10 border-[#BE1E2D]/20', badgeText: 'text-[#BE1E2D]' },
+}
+const defaultColors = serviceColors['asilo-afirmativo']
+
 export default async function ServicesPage() {
   const supabase = await createClient()
   const { data: services } = await supabase
@@ -193,70 +205,88 @@ export default async function ServicesPage() {
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {regular.map((service, i) => {
             const Icon = iconMap[service.icon || 'FileText'] || FileText
+            const colors = serviceColors[service.slug] || defaultColors
             return (
               <Link key={service.id} href={`/portal/services/${service.slug}`}>
                 <div
-                  className="svc-card-enter svc-hover-lift svc-diagonal-stripe group relative bg-white rounded-2xl overflow-hidden cursor-pointer h-full border border-gray-100"
+                  className="svc-card-enter svc-hover-lift group relative bg-white rounded-2xl overflow-hidden cursor-pointer h-full border border-gray-100 hover:border-gray-200"
                   style={{ animationDelay: `${(i + 2) * 100}ms` }}
                 >
-                  {/* Top accent - dual tone bar */}
-                  <div className="h-1 flex">
-                    <div className="flex-1 bg-[#002855] group-hover:bg-[#002855] transition-colors" />
-                    <div className="w-16 bg-gradient-to-r from-[#002855] to-[#F2A900] group-hover:w-full transition-all duration-500" />
-                    <div className="flex-1 bg-gray-100 group-hover:bg-[#F2A900] transition-all duration-500" />
-                  </div>
+                  {/* Top color bar - thick and vivid */}
+                  <div className={`h-1.5 ${colors.bar} transition-all duration-300`} />
+
+                  {/* Colored corner accent on hover */}
+                  <div
+                    className="absolute top-0 right-0 w-24 h-24 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                    style={{
+                      background: `radial-gradient(circle at top right, ${colors.accent}15 0%, transparent 70%)`
+                    }}
+                  />
 
                   <div className="p-6">
                     {/* Icon + Title row */}
                     <div className="flex items-start gap-4">
-                      <div className="svc-icon-glow p-3 rounded-xl bg-gradient-to-br from-[#002855]/8 to-[#002855]/3 group-hover:from-[#002855] group-hover:to-[#001a3a] transition-all duration-400 shrink-0 border border-[#002855]/8 group-hover:border-[#002855]">
-                        <Icon className="w-5 h-5 text-[#002855] group-hover:text-[#F2A900] transition-colors duration-300" />
+                      <div className={`svc-icon-glow p-3.5 rounded-xl bg-gradient-to-br ${colors.bg} ${colors.bgHover} transition-all duration-400 shrink-0 border border-transparent`}
+                        style={{ borderColor: `${colors.accent}15` }}
+                      >
+                        <Icon className={`w-5 h-5 ${colors.icon} ${colors.iconText} transition-colors duration-300`} />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-2">
-                          <h3 className="font-bold text-gray-900 group-hover:text-[#002855] transition-colors leading-snug">
+                          <h3 className="font-bold text-gray-900 transition-colors leading-snug"
+                            style={{ ['--tw-text-opacity' as any]: 1 }}
+                          >
                             {service.name}
                           </h3>
-                          <div className="mt-0.5 shrink-0 w-6 h-6 rounded-full bg-gray-50 group-hover:bg-[#F2A900] flex items-center justify-center transition-all duration-300">
-                            <ChevronRight className="w-3.5 h-3.5 text-gray-500 group-hover:text-[#002855] group-hover:translate-x-0.5 transition-all" />
+                          <div
+                            className="svc-arrow-btn mt-0.5 shrink-0 w-7 h-7 rounded-full flex items-center justify-center bg-gray-50"
+                            style={{ ['--svc-accent' as any]: colors.accent }}
+                          >
+                            <ChevronRight className="w-3.5 h-3.5 text-gray-400 group-hover:translate-x-0.5 transition-transform" />
                           </div>
                         </div>
-                        <p className="text-sm text-gray-600 mt-1.5 line-clamp-2 leading-relaxed">
+                        <p className="text-sm text-gray-500 mt-1.5 line-clamp-2 leading-relaxed">
                           {service.short_description}
                         </p>
                       </div>
                     </div>
 
-                    {/* Divider with diamond */}
-                    <div className="mt-5 mb-4 flex items-center gap-2">
-                      <div className="h-px flex-1 bg-gray-100 group-hover:bg-[#002855]/10 transition-colors" />
-                      <div className="w-1 h-1 rotate-45 bg-gray-200 group-hover:bg-[#F2A900] transition-colors" />
-                      <div className="h-px flex-1 bg-gray-100 group-hover:bg-[#002855]/10 transition-colors" />
+                    {/* Colored divider */}
+                    <div className="mt-5 mb-4 flex items-center gap-3">
+                      <div className="h-px flex-1 bg-gray-100 group-hover:bg-gray-200 transition-colors" />
+                      <div
+                        className="w-1.5 h-1.5 rotate-45 transition-all duration-300 group-hover:scale-150"
+                        style={{ backgroundColor: colors.accent }}
+                      />
+                      <div className="h-px flex-1 bg-gray-100 group-hover:bg-gray-200 transition-colors" />
                     </div>
 
                     {/* Price + Duration */}
                     <div className="flex items-end justify-between">
                       <div>
-                        <span className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Precio</span>
-                        <div className="flex items-baseline gap-1 mt-0.5">
-                          <span className="text-2xl font-extrabold text-[#002855] tracking-tight">
+                        <span className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Precio</span>
+                        <div className="flex items-baseline gap-1.5 mt-0.5">
+                          <span
+                            className="text-2xl font-extrabold tracking-tight"
+                            style={{ color: colors.accent }}
+                          >
                             ${Number(service.base_price).toLocaleString()}
                           </span>
-                          <span className="text-xs text-gray-500">USD</span>
+                          <span className="text-xs text-gray-400 font-medium">USD</span>
                         </div>
                       </div>
 
                       <div className="flex items-center gap-2">
                         {service.allow_installments && (
-                          <div className="flex items-center gap-1 bg-[#F2A900]/8 border border-[#F2A900]/15 rounded-full px-2.5 py-1">
-                            <Zap className="w-3 h-3 text-[#F2A900]" />
-                            <span className="text-[10px] font-bold text-[#9a6d00] uppercase">Cuotas</span>
+                          <div className={`flex items-center gap-1 ${colors.badge} border rounded-full px-2.5 py-1`}>
+                            <Zap className="w-3 h-3" style={{ color: colors.accent }} />
+                            <span className={`text-[10px] font-bold ${colors.badgeText} uppercase`}>Cuotas</span>
                           </div>
                         )}
                         {service.estimated_duration && (
                           <div className="flex items-center gap-1.5 bg-gray-50 rounded-full px-3 py-1">
-                            <Clock className="w-3 h-3 text-gray-500" />
-                            <span className="text-[10px] font-semibold text-gray-600">
+                            <Clock className="w-3 h-3 text-gray-400" />
+                            <span className="text-[10px] font-semibold text-gray-500">
                               {service.estimated_duration}
                             </span>
                           </div>
@@ -264,6 +294,12 @@ export default async function ServicesPage() {
                       </div>
                     </div>
                   </div>
+
+                  {/* Bottom colored line on hover */}
+                  <div
+                    className="h-0.5 w-0 group-hover:w-full transition-all duration-500 ease-out"
+                    style={{ backgroundColor: colors.accent }}
+                  />
                 </div>
               </Link>
             )

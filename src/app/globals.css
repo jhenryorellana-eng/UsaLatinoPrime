@@ -371,6 +371,18 @@
 }
 
 /* Map floating badge */
+/* Arrow button inherits accent color on hover */
+.svc-arrow-btn {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.group:hover .svc-arrow-btn {
+  background-color: var(--svc-accent);
+  transform: scale(1.1);
+}
+.group:hover .svc-arrow-btn svg {
+  color: white;
+}
+
 .svc-map-badge {
   animation: svc-badge-float 3s ease-in-out infinite;
 }
